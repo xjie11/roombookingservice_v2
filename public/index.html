@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- META -->
+	<meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="description" content="Room Booking" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- for disable zooming capabilities on mobile: maximum-scale=1, user-scalable=no -->
+   	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, private" />
+	<meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+	<link rel="icon" type="image/png" href="favicon-4.png">
+	<title>Room Booking</title>
+
+	<script type="text/javascript" src="js/lib/jquery/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="http://cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/additional-methods.min.js"></script>
+
+	<script type="text/javascript" src="js/loadTable.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="css/lib/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/lib/bootstrap-theme.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/lib/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/lib/todc-bootstrap.min.css" />
+
+	<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.css" />
+	<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+
+</head>
+<body>
+<div class="container-fluid main-container" id="mainContainer">
+	<div id="loginOptions" class="login-options">
+		<div class="row">
+			<div class="col-xs-12">
+				<h1>Welcome to Room Booking Services</h1><br><br>
+				<button id="toManagement" class="btn btn-primary btn-lg button-spacing" type="button">Manage Bookings</button>
+				<button id="toBooking" class="btn btn-primary btn-lg button-spacing" type="button">Book a Room</button>
+			</div>
+		</div>
+	</div>
+
+<!-- cleanup starts here -->
+	<div id="managementPage" class="management-page table-responsive">
+
+		<table id="example" class="display" cellspacing="0" width="100%">
+	        <thead>
+	            <tr>
+	                <th>Booking ID</th>
+	                <th>Name</th>
+	                <th>Contact Number</th>
+	                <th>Email</th>
+	                <th>Date</th>
+	                <th>Meeting Name</th>
+	                <th>Number of Attendees</th>
+	                <th>Prep Start Time</th>
+	                <th>Start Time</th>
+	                <th>End Time</th>
+	                <th>Room Requested</th>
+	                <th>Actions</th>
+	                <th>Approve</th>
+	            </tr>
+	        </thead>
+	    </table>
+
+		<table id="table" class="table">
+			<thead id="tableHead">
+				<tr>
+					<th>Booking ID</th>
+					<th>Name</th>
+					<th>Contact Number</th>
+					<th>Email</th>
+					<th>Meeting Date</th>
+					<th>Meeting Name</th>
+					<th>Number of Attendees</th>
+					<th>Prep Start Time</th>
+					<th>Start Time</th>
+					<th>End Time</th>
+					<th>Room Requested</th>
+					<th>Actions</th>
+					<th>Approve</th>
+				</tr>
+			</thead>
+			<tbody id="tableBody"></tbody>
+		</table>
+		<br><br><br>
+		<button id="refreshMP" class="btn btn-default btn-lg" type="button">Refresh</button>
+		<button id="mPbackButton" class="btn btn-default btn-lg" type="button">Cancel</button>
+		<button id="mPsaveButton" class="btn btn-success btn-lg" type="button">Save</button>
+	</div>
+
+	<div id="bookingPage" class="booking-page">
+		<form id="form" role="form" method="POST" action="/api/booking">
+			<div class="form-group col-xs-3">
+				<label for="contactNameForBooking" class="label-big">Contact Name: </label>
+				<input id="contactNameForBooking" name="contactNameForBooking" class="form-control required" type="text" placeholder="Enter name"/>
+				<br>
+				<label for="contactNumberForBooking" class="label-big">Contact Number: </label>
+				<input id="contactNumberForBooking" name="contactNumberForBooking" class="form-control required" type="text" placeholder="Enter number"/>
+				<br>
+				<label for="contactEmailForBooking" class="label-big">Email: </label>
+				<input id="contactEmailForBooking" name="contactEmailForBooking" class="form-control required" type="text" placeholder="Enter email"/>
+				<br>
+				<label for="meetingDate" class="label-big">Meeting Date: </label>
+				<input id="meetingDate" name="meetingDate" class="form-control required" type="text" placeholder="Enter date"/>
+				<br><br>
+				<button id="bPbackButton" class="btn btn-default btn-lg" type="button">Cancel</button>
+				<button id="submit" class="btn btn-success btn-lg" type="submit">Submit</button>
+			</div>
+			<div class="form-group col-xs-3">
+				<label for="meetingName" class="label-big">Meeting Name: </label>
+				<input id="meetingName" name="meetingName" class="form-control required" type="text" placeholder="Enter name"/>
+				<br>
+				<label for="numberOfAttendees" class="label-big">Number of Attendees: </label>
+				<input id="numberOfAttendees" name="numberOfAttendees" class="form-control required" type="text" placeholder="Enter number"/>
+				<br>
+				<label for="prepStartTime" class="label-big">Prep Start Time: </label>
+				<input id="prepStartTime" name="prepStartTime" class="form-control required" type="text" placeholder="Enter time"/>
+			</div>
+			<div class="col-xs-3">
+				<label for="meetingStartTime" class="label-big">Meeting Start Time: </label>
+				<input id="meetingStartTime" name="meetingStartTime" class="form-control required" type="text" placeholder="Enter time"/>
+				<br>
+				<label for="meetingEndTime" class="label-big">Meeting End Time: </label>
+				<input id="meetingEndTime" name="meetingEndTime" class="form-control required" type="text" placeholder="Enter time"/>
+				<br>
+				<label for="roomRequest" class="label-big">Room Request: </label>
+				<input id="roomRequest" name="roomRequest" class="form-control required" type="text" placeholder="Enter room"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+	<script>
+		$(function() {
+
+			$('form#form').validate({
+				rules: {
+					contactNameForBooking: {
+						required: true,
+						pattern: /^.*$/
+					},
+					contactNumberForBooking: {
+						required: true,
+						number: true,
+						minlength: 10,
+						maxlength: 10,
+					},
+					contactEmailForBooking: {
+						required: true,
+						email: true,
+					},
+					meetingDate: {
+						required: true,
+						number: true,
+						minlength: 8,
+						maxlength: 8
+					},
+					meetingName: {
+						required: true,
+						pattern: /^.*$/
+					},
+					numberOfAttendees: {
+						required: true,
+						number: true,
+						minlength: 1,
+						maxlength: 4,
+					},
+					prepStartTime: {
+						required: true,
+						number: true,
+						minlength: 1,
+						maxlength: 2,
+					},
+					meetingStartTime: {
+						required: true,
+						number: true,
+						minlength: 4,
+						maxlength: 4,
+					},
+					meetingEndTime: {
+						required: true,
+						number: true,
+						minlength: 4,
+						maxlength: 4,
+					},
+					roomRequest: {
+						required: true,
+						number: true,
+						minlength: 3,
+						maxlength: 3,
+					}
+				},
+				messages: {
+					contactNameForBooking: {
+						required: 'Required field'
+					},
+					contactNumberForBooking: {
+						required: 'Required field',
+						number: "Please enter a 10-digit phone number (ie. '6131234567' for 613-123-4567)"
+						// minlength: 10,
+						// maxlength: 10,
+					},
+					contactEmailForBooking: {
+						required: 'Required field',
+						email: "Please enter a validat email (ie. jobs@apple.com)"
+					},
+					meetingDate: {
+						required: 'Required field',
+						number: "Please enter an 8-digit date (ie. '09232014' for Sept 23, 2014)"
+					},
+					meetingName: {
+						required: 'Required field'
+					},
+					numberOfAttendees: {
+						required: 'Required field',
+						number: "Please enter 1 to 4 digits (ie. '25' for 25 attendees)"
+						// minlength: 1,
+						// maxlength: 4,
+					},
+					prepStartTime: {
+						required: 'Required field',
+						number: "Please enter 1 to 2 digits (ie. '5' for 5 minutes)"
+						// minlength: 1,
+						// maxlength: 2,
+					},
+					meetingStartTime: {
+						required: 'Required field',
+						number: "Please enter a 4-digit time (ie. '2230' for 10:30PM)"
+						// minlength: 4,
+						// maxlength: 4,
+					},
+					meetingEndTime: {
+						required: 'Required field',
+						number: "Please enter a 4-digit time (ie. '2230' for 10:30PM)"
+						// minlength: 4,
+						// maxlength: 4,
+					},
+					roomRequest: {
+						required: 'Required field',
+						number: "Please enter a 3-digit room number (ie. '320' for room 320)"
+						// minlength: 3,
+						// maxlength: 3,
+					}
+				}
+
+			});
+
+
+			$('#refreshMP').on('click', function() {
+				$('#tableBody').empty();
+				$('button#mPsaveButton').attr('onclick', '').unbind('click');
+				loadTable();
+			});
+
+			$('#loginOptions').show();
+			$('#managementPage').hide();
+			$('#bookingPage').hide();
+
+			$('#toManagement').on('click', function() {
+				$('#loginOptions').hide();
+				$('#managementPage').show();
+				$('#bookingPage').hide();
+				$('#mPsaveButton').hide();
+
+				loadTable();
+			});
+
+			$('#toBooking').on('click', function() {
+				$('#loginOptions').hide();
+				$('#managementPage').hide();
+				$('#bookingPage').show();
+			});
+
+			$('#mPbackButton').on('click', function() {
+				$('#loginOptions').show();
+				$('#managementPage').hide();
+				$('#bookingPage').hide();
+				$('#tableBody').empty();
+				$('button#mPsaveButton').attr('onclick', '').unbind('click');
+			});
+
+			$('#bPbackButton').on('click', function() {
+				$('#loginOptions').show();
+				$('#managementPage').hide();
+				$('#bookingPage').hide();
+			});
+
+			$('form#form').submit(function(e) {
+
+				$.support.cors = true;
+				e.preventDefault();
+
+				if ($('form#form').valid()) {
+					console.log('Valid');
+
+
+					var data = {
+						name: $('#contactNameForBooking').val(),
+						contactNumber: $('#contactNumberForBooking').val(),
+						email: $('#contactEmailForBooking').val(),
+						date: $('#meetingDate').val(),
+						meetingName: $('#meetingName').val(),
+						numberOfAttendees: $('#numberOfAttendees').val(),
+						prepStartTime: $('#prepStartTime').val(),
+						startTime: $('#meetingStartTime').val(),
+						endTime: $('#meetingEndTime').val(),
+						roomRequested: $('#roomRequest').val()
+					};
+
+					$.ajax({
+						type: "POST",
+	                    crossDomain: true,
+	                    url: "http://localhost:4567/api/booking",
+						contentType: 'application/json',
+	                    dataType: 'json',
+	                    data: JSON.stringify(data),
+	                    success: function (response, textStatus, xhr){
+	                    	console.log(response);
+	                    },
+	                    error: function(xhr, textStatus, errorThrown){
+							console.log('Error: ' + errorThrown + textStatus);
+	                    }
+					}).done(function() {
+						// $('#contactNameForBooking').val('');
+						// $('#contactEmailForBooking').val('');
+						// $('#dateForBooking').val('');
+						// $('#startTimeForBooking').val('');
+						// $('#preferredRoomForBooking').val('');
+						// $('#contactNameForBooking').val(''),
+						// $('#contactNumberForBooking').val(''),
+						// $('#contactEmailForBooking').val(''),
+						// $('#meetingDate').val(''),
+						// $('#meetingName').val(''),
+						// $('#numberOfAttendees').val(''),
+						// $('#prepStartTime').val(''),
+						// $('#meetingStartTime').val(''),
+						// $('#meetingEndTime').val(''),
+						// $('#roomRequest').val('')
+
+						$('#loginOptions').show();
+						$('#managementPage').hide();
+						$('#bookingPage').hide();
+					});
+
+				} else {
+					console.log('Invalid');
+				}
+
+			});
+
+		});
+	</script>
+</body>
+</html>

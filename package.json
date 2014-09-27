@@ -1,0 +1,12 @@
+{
+  "name": "room-booking-services",
+  "description": "Room Booking App",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "4.x",
+    "mongoose": "3.8.16",
+    "mongodb": "1.4.12",
+    "nodemailer": "1.3.0"
+  }
+}
